@@ -212,6 +212,7 @@ tmp=$tmpdir/zImage.$$.o
 ksection=.kernel:vmlinux.strip
 isection=.kernel:initrd
 link_address='0x400000'
+entry_address=
 make_space=y
 
 case "$platform" in
@@ -324,6 +325,7 @@ xpedite52*)
     ;;
 gamecube|wii)
     link_address='0x600000'
+    entry_address='0x80600000'
     platformo="$object/$platform-head.o $object/$platform.o"
     ;;
 treeboot-currituck)
@@ -467,8 +469,11 @@ if [ "$platform" != "miboot" ]; then
     if [ -n "$link_address" ] ; then
         text_start="-Ttext $link_address"
     fi
+    if [ -n "$link_address" ] ; then
+	entry_point="-e $entry_address"
+    fi
 #link everything
-    ${CROSS}ld -m $format -T $lds $text_start $pie $nodl -o "$ofile" \
+    ${CROSS}ld -m $format -T $lds $text_start $entry_point $pie $nodl -o "$ofile" \
 	$platformo $tmp $object/wrapper.a
     rm $tmp
 fi
