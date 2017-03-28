@@ -359,7 +359,9 @@ config PPC_HAVE_PMU_SUPPORT
        bool
 
 config PPC_PERF_CTRS
-       def_bool y
+       bool
+       default n if GAMECUBE_COMMON
+       default y
        depends on PERF_EVENTS && PPC_HAVE_PMU_SUPPORT
        help
          This enables the powerpc-specific perf_event back-end.
