@@ -106,10 +106,12 @@ END_FTR_SECTION_IFCLR(CPU_FTR_L2CR)
 	mflr	r9
 
 	/* Stop DST streams */
+#ifdef CONFIG_ALTIVEC
 BEGIN_FTR_SECTION
 	DSSALL
 	sync
 END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
+#endif /* CONFIG_ALTIVEC */
 
 	/* Turn off interrupts and data relocation. */
 	mfmsr	r7		/* Save MSR in r7 */
@@ -304,8 +306,10 @@ END_FTR_SECTION_IFCLR(CPU_FTR_L3CR)
 	isync
 
 	/* Stop DST streams */
+#ifdef CONFIG_ALTIVEC
 	DSSALL
 	sync
+#endif /* CONFIG_ALTIVEC */
 
 	/* Get the current enable bit of the L3CR into r4 */
 	mfspr	r4,SPRN_L3CR
@@ -412,10 +416,12 @@ END_FTR_SECTION_IFSET(CPU_FTR_L3CR)
  */
 _GLOBAL(__flush_disable_L1)
 	/* Stop pending alitvec streams and memory accesses */
+#ifdef CONFIG_ALTIVEC
 BEGIN_FTR_SECTION
 	DSSALL
-END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
  	sync
+END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
+#endif /* CONFIG_ALTIVEC */
 
 	/* Load counter to 0x4000 cache lines (512k) and
 	 * load cache with datas

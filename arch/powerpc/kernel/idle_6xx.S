@@ -131,10 +131,12 @@ BEGIN_FTR_SECTION
 	oris	r4,r4,HID0_DPM@h	/* that should be done once for all  */
 END_FTR_SECTION_IFCLR(CPU_FTR_NO_DPM)
 	mtspr	SPRN_HID0,r4
+#ifdef CONFIG_ALTIVEC
 BEGIN_FTR_SECTION
 	DSSALL
 	sync
 END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
+#endif /* CONFIG_ALTIVEC */
 	CURRENT_THREAD_INFO(r9, r1)
 	lwz	r8,TI_LOCAL_FLAGS(r9)	/* set napping bit */
 	ori	r8,r8,_TLF_NAPPING	/* so when we take an exception */
