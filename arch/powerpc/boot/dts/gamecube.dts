@@ -21,7 +21,7 @@
 	#size-cells = <1>;
 
 	chosen {
-		bootargs = "root=/dev/gcnsda2 rootwait udbg-immortal";
+		bootargs = "root=/dev/gcnsda2 rootwait udbg-immortal console=udbg0";
 	};
 
 	memory {
